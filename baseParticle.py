@@ -31,6 +31,15 @@ class Particle:
         self.shader = random.choice(SHADER_CACHE_SPECIFICS[name])
         self.color = self.shader.fetchColor()
 
+    def convertToLocal(self, columnOffset):
+        self.x = self.x - (columnOffset * 10)
+
+    def convertToGlobal(self, columnOffset):
+        self.x = self.x + (columnOffset * 10)
+
+    def setCoordsForLocal(self, positionX, columnOffset):
+        self.x = positionX - (columnOffset * 10)
+
     def getLoc(self):
         return (self.x, self.y)
 
@@ -48,21 +57,7 @@ class Particle:
             return True
 
     def update(self, grid, dt = 1):
-        """Update particle behavior with gravity and velocity."""
-        # Apply gravity
-        self.velocity[1] += self.gravity * dt  # Acceleration over time
-        # Calculate new position
-        new_x = int(self.x + self.velocity[0] * dt)
-        new_y = int(self.y + self.velocity[1] * dt)
-        # Check bounds and move if possible
-        if 0 <= new_x < len(grid[0]) and 0 <= new_y < len(grid):
-            if grid[new_y][new_x] is None:  # If space is empty, move there
-                grid[self.y][self.x] = None
-                self.x = new_x
-                self.y = new_y
-                grid[self.y][self.x] = self
-            else:
-                self.velocity[1] = 0  # Stop downward motion if blocked
+        pass
 
     def getType(self):
         return self.type
